@@ -3,8 +3,17 @@ package ifpe.edu.user;
 import java.util.ArrayList;
 import java.util.List;
 
-public class UserRepository {
-    private List<User> users = new ArrayList<>();
+public final class UserRepository {
+    private static UserRepository instance;
+    private final List<User> users = new ArrayList<>();
+
+    public static UserRepository getInstance() {
+        if (instance == null) {
+            instance = new UserRepository();
+        }
+
+        return instance;
+    }
 
     public User save(User user) {
         user.setId((long) (users.size() + 1));
