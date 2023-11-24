@@ -9,12 +9,6 @@ import ifpe.edu.user.dtos.CreateUserDto;
 import ifpe.edu.user.dtos.UpdateUserDto;
 
 public class UserService {
-    private final EmailValidator emailValidator = new EmailValidator();
-    private final PhoneNumberValidator phoneNumberValidator = new PhoneNumberValidator();
-    private final BirthDateValidator birthDateValidator = new BirthDateValidator();
-    private final CpfValidator cpfValidator = new CpfValidator();
-
-
     UserRepository userRepository;
 
     public UserService(UserRepository userRepository) {
@@ -22,34 +16,6 @@ public class UserService {
     }
 
     public User registerUser(CreateUserDto createUserDto) {
-        boolean isValidEmail = emailValidator.validate(createUserDto.email());
-        boolean isPhoneNumberValid = phoneNumberValidator.validate(createUserDto.numeroTelefone());
-        boolean isBirthDateValid = birthDateValidator.validate(createUserDto.dataNascimento());
-        boolean isCpfValid = cpfValidator.validate(createUserDto.cpf());
-
-        if (!isCpfValid) {
-            throw new ValidationException("Erro. CPF inválido.");
-        }
-
-        if (!isBirthDateValid) {
-            throw new ValidationException("Erro. Data de nascimento inválida. Use o formato DD/MM/YYYY");
-        }
-
-        if (!isPhoneNumberValid) {
-            throw new ValidationException("Erro. Número de telefone inválido!");
-        }
-
-        if (!isValidEmail) {
-            throw new ValidationException("Erro. Email inválido!");
-        }
-
-        if (createUserDto.nomeCompleto() == null || createUserDto.nomeCompleto().isEmpty()) {
-            throw new ValidationException("Erro. Campo 'Nome completo' não foi inserido!");
-        }
-
-        if (createUserDto.senha().length() < 8) {
-            throw new ValidationException("Erro. A senha deve ter pelo menos 8 digitos.");
-        }
 
         if (userRepository.findByEmail(createUserDto.email()) != null) {
             throw new ValidationException("Erro. Uma conta já foi criada com esse email!");
