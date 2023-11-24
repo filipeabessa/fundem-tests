@@ -15,10 +15,17 @@ import org.mockito.junit.jupiter.MockitoExtension;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.mockito.Mockito.lenient;
 import static org.mockito.Mockito.when;
 
 @ExtendWith(MockitoExtension.class)
 class UserServiceTest {
+    String NOME_COMPLETO = "Filipe Bessa";
+    String TELEFONE_VALIDO = "+55 (81) 9999-9999";
+    String EMAIL_VALIDO = "teste@gmail.com";
+    String CPF_VALIDO = "12345678910";
+    String DATA_NASCIMENTO_VALIDA = "01/01/1999";
+    String SENHA_VALIDA = "12345678";
     @Mock
     UserRepository userRepository;
 
@@ -30,12 +37,12 @@ class UserServiceTest {
     @DisplayName("FIL-TC001 - Realizar cadastro de usuário com sucesso")
     void realizarCadastroDeUsuarioComSucesso() {
         CreateUserDto createUserDto = new CreateUserDto(
-                "João da Silva",
-                "12345678910",
-                "teste@gmail.com",
-                "1999-01-01",
-                "81999999999",
-                "12345678"
+                NOME_COMPLETO,
+                CPF_VALIDO,
+                EMAIL_VALIDO,
+                DATA_NASCIMENTO_VALIDA,
+                TELEFONE_VALIDO,
+                SENHA_VALIDA
         );
 
 
@@ -47,28 +54,30 @@ class UserServiceTest {
 
         User user = userService.registerUser(createUserDto);
 
-        assertEquals("João da Silva", user.getNomeCompleto());
-        assertEquals("12345678910", user.getCpf());
-        assertEquals("teste@gmail.com", user.getEmail());
-        assertEquals("1999-01-01", user.getDataNascimento());
-        assertEquals("81999999999", user.getNumeroTelefone());
-        assertEquals("12345678", user.getSenha());
+        assertEquals(NOME_COMPLETO, user.getNomeCompleto());
+        assertEquals(CPF_VALIDO, user.getCpf());
+        assertEquals(EMAIL_VALIDO, user.getEmail());
+        assertEquals(DATA_NASCIMENTO_VALIDA, user.getDataNascimento());
+        assertEquals(TELEFONE_VALIDO, user.getNumeroTelefone());
+        assertEquals(SENHA_VALIDA, user.getSenha());
     }
 
     @Test
     @DisplayName("FIL-TC002 - Realizar cadastro de usuário com email já cadastrado")
     void realizarCadastroDeUsuarioComEmailJaCadastrado() {
-        String email = "teste@gmail.com";
+        String email = EMAIL_VALIDO;
 
         CreateUserDto createUserDto = new CreateUserDto(
-                "João da Silva",
-                "12345678910",
+                NOME_COMPLETO,
+                CPF_VALIDO,
                 email,
-                "1999-01-01",
-                "81999999999",
-                "12345678"
+                DATA_NASCIMENTO_VALIDA,
+                TELEFONE_VALIDO,
+                SENHA_VALIDA
         );
-        when(userRepository.findByEmail(email)).thenReturn(new User(createUserDto));
+        User user = new User(createUserDto);
+
+        lenient().when(userRepository.findByEmail(email)).thenReturn(user);
 
         assertThrows(ValidationException.class, () -> {
             userService.registerUser(createUserDto);
@@ -78,15 +87,15 @@ class UserServiceTest {
     @Test
     @DisplayName("FIL-TC003 - Realizar cadastro de usuário com email inválido")
     void realizarCadastroDeUsuarioComEmailInvalido() {
-        String email = "teste";
+        String emailInvalido = "teste";
 
         CreateUserDto createUserDto = new CreateUserDto(
-                "João da Silva",
-                "12345678910",
-                email,
-                "1999-01-01",
-                "81999999999",
-                "12345678"
+                NOME_COMPLETO,
+                CPF_VALIDO,
+                emailInvalido,
+                DATA_NASCIMENTO_VALIDA,
+                TELEFONE_VALIDO,
+                SENHA_VALIDA
         );
 
         assertThrows(ValidationException.class, () -> {
@@ -100,12 +109,12 @@ class UserServiceTest {
         String telefone = "8199999999";
 
         CreateUserDto createUserDto = new CreateUserDto(
-                "João da Silva",
-                "12345678910",
-                "teste@gmail.com",
-                "1999-01-01",
+                NOME_COMPLETO,
+                CPF_VALIDO,
+                EMAIL_VALIDO,
+                DATA_NASCIMENTO_VALIDA,
                 telefone,
-                "12345678"
+                SENHA_VALIDA
         );
 
         assertThrows(ValidationException.class, () -> {
@@ -117,15 +126,15 @@ class UserServiceTest {
     @Test
     @DisplayName("FIL-TC005 - Realizar cadastro de usuário sem campo nome completo")
     void realizarCadastroDeUsuarioSemCampoNomeCompleto() {
-        String nomeCompleto = "";
+        String nomeCompletoVazio = "";
 
         CreateUserDto createUserDto = new CreateUserDto(
-                 nomeCompleto,
-                "12345678910",
-                "teste@gmail.com",
-                "1999-01-01",
-                "81999999999",
-                "12345678"
+                nomeCompletoVazio,
+                CPF_VALIDO,
+                EMAIL_VALIDO,
+                DATA_NASCIMENTO_VALIDA,
+                TELEFONE_VALIDO,
+                SENHA_VALIDA
         );
 
         assertThrows(ValidationException.class, () -> {
@@ -136,15 +145,15 @@ class UserServiceTest {
     @Test
     @DisplayName("FIL-TC006 - Realizar cadastro de usuário com senha menor que 8 digitos")
     void realizarCadastroDeUsuarioComSenhaMenorQue8Digitos() {
-        String senha = "1234567";
+        String senhaInvalida = "1234567";
 
         CreateUserDto createUserDto = new CreateUserDto(
-                "Filipe",
-                "12345678910",
-                "teste@gmail.com",
-                "1999-01-01",
-                "81999999999",
-                senha
+                NOME_COMPLETO,
+                CPF_VALIDO,
+                EMAIL_VALIDO,
+                DATA_NASCIMENTO_VALIDA,
+                TELEFONE_VALIDO,
+                senhaInvalida
         );
 
         assertThrows(ValidationException.class, () -> {
@@ -155,15 +164,15 @@ class UserServiceTest {
     @Test
     @DisplayName("FIL-TC007 - Realizar cadastro de usuário com CPF inválido")
     void realizarCadastroDeUsuarioComCpfInvalido() {
-        String cpf = "123456789";
+        String cpfInvalido = "123456789";
 
         CreateUserDto createUserDto = new CreateUserDto(
-                "Filipe",
-                cpf,
-                "teste@gmail.com",
-                "1999-01-01",
-                "81999999999",
-                "12345678"
+                NOME_COMPLETO,
+                cpfInvalido,
+                EMAIL_VALIDO,
+                DATA_NASCIMENTO_VALIDA,
+                TELEFONE_VALIDO,
+                SENHA_VALIDA
         );
 
         assertThrows(ValidationException.class, () -> {
@@ -174,15 +183,15 @@ class UserServiceTest {
     @Test
     @DisplayName("FIL-TC008 - Realizar cadastro de usuário com data de nascimento inválida")
     void realizarCadastroDeUsuarioComDataDeNascimentoInvalida() {
-        String dataNascimento = "1999-01-01";
+        String dataNascimentoInvalida = "1999-01-01";
 
         CreateUserDto createUserDto = new CreateUserDto(
-                "Filipe",
-                "12345678910",
-                "teste@gmail.com",
-                dataNascimento,
-                "81999999999",
-                "12345678"
+                NOME_COMPLETO,
+                CPF_VALIDO,
+                EMAIL_VALIDO,
+                dataNascimentoInvalida,
+                TELEFONE_VALIDO,
+                SENHA_VALIDA
         );
 
         assertThrows(ValidationException.class, () -> {
@@ -191,28 +200,23 @@ class UserServiceTest {
     }
 
     @Test
-    @DisplayName("FIL-TC009 - Realizar cadastro de usuário com data de nascimento inválida")
+    @DisplayName("FIL-TC010 - Edição do nome do usuário efectuada com sucesso")
     void edicaoDoNomeDoUsuarioEfectuadaComSucesso() {
         User user = new User();
-        user.setId(1L);
         user.setNomeCompleto("João da Silva");
-        user.setEmail("teste@gmail.com");
-        user.setCpf("12345678910");
-        user.setDataNascimento("1999-01-01");
-        user.setNumeroTelefone("81999999999");
 
 
         UpdateUserDto updateUserDto = new UpdateUserDto(
                 1L,
                 "Novo nome",
-                "12345678910",
-                "teste@gmail.com",
-                "1999-01-01",
-                "81999999999",
-                "12345678"
+                CPF_VALIDO,
+                EMAIL_VALIDO,
+                DATA_NASCIMENTO_VALIDA,
+                TELEFONE_VALIDO,
+                SENHA_VALIDA
         );
 
-        when(userRepository.findById(1L)).thenReturn(user);
+        when(userRepository.findById(updateUserDto.id())).thenReturn(user);
         when(userRepository.save(user)).thenReturn(user);
 
         userService.updateUser(updateUserDto);
