@@ -3,9 +3,11 @@ package ifpe.edu.user;
 import ifpe.edu.common.exceptions.ValidationException;
 import ifpe.edu.common.validators.EmailValidator;
 import ifpe.edu.user.dtos.CreateUserDto;
+import ifpe.edu.user.dtos.UpdateUserDto;
 
 public class UserService {
     EmailValidator emailValidator = new EmailValidator();
+
     UserRepository userRepository;
 
     public UserService(UserRepository userRepository) {
@@ -43,9 +45,8 @@ public class UserService {
         userRepository.deleteById(id);
     }
 
-    public User updateUser(Long id, CreateUserDto createUserDto) {
-        User user = new User(createUserDto);
-        user.setId(id);
+    public User updateUser(UpdateUserDto updateUserDto){
+        User user = new User(updateUserDto);
         return userRepository.save(user);
     }
 }

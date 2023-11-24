@@ -1,6 +1,7 @@
 package ifpe.edu.user;
 
 import ifpe.edu.user.dtos.CreateUserDto;
+import ifpe.edu.user.dtos.UpdateUserDto;
 
 public class User {
     Long id;
@@ -19,6 +20,21 @@ public class User {
         this.numeroTelefone = createUserDto.numeroTelefone();
         this.senha = createUserDto.senha();
     }
+
+    public User(UpdateUserDto updateUserDto) {
+        this.id = updateUserDto.id();
+        this.nomeCompleto = updateUserDto.nomeCompleto();
+        this.cpf = updateUserDto.cpf();
+        this.email = updateUserDto.email();
+        this.dataNascimento = updateUserDto.dataNascimento();
+        this.numeroTelefone = updateUserDto.numeroTelefone();
+        this.senha = updateUserDto.senha();
+    }
+
+    public User() {
+
+    }
+
 
     public Long getId() {
         return id;
@@ -54,5 +70,25 @@ public class User {
 
     public String getSenha() {
         return senha;
+    }
+
+    public void setNomeCompleto(String nomeCompleto) {
+        this.nomeCompleto = nomeCompleto;
+    }
+
+    public void setCpf(String cpf) {
+        this.cpf = cpf;
+    }
+
+    public void setDataNascimento(String dataNascimento) {
+        this.dataNascimento = dataNascimento;
+    }
+
+    public void setNumeroTelefone(String numeroTelefone) {
+        this.numeroTelefone = numeroTelefone;
+    }
+
+    public void setSenha(String senha) {
+        this.senha = senha;
     }
 }

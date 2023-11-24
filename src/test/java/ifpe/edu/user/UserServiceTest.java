@@ -3,22 +3,31 @@ package ifpe.edu.user;
 
 import ifpe.edu.common.exceptions.ValidationException;
 import ifpe.edu.user.dtos.CreateUserDto;
+import ifpe.edu.user.dtos.UpdateUserDto;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.ArgumentCaptor;
+import org.mockito.InjectMocks;
 import org.mockito.Mock;
+import org.mockito.junit.jupiter.MockitoExtension;
 
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.mockito.Mockito.when;
 
+@ExtendWith(MockitoExtension.class)
 class UserServiceTest {
-    UserRepository userRepository = new UserRepository();
-    UserService userService = new UserService(userRepository);
-
     @Mock
-    private User user;
+    UserRepository userRepository;
+
+    @InjectMocks
+    UserService userService = new UserService(userRepository);
 
 
     @Test
+    @DisplayName("FIL-TC001 - Realizar cadastro de usuário com sucesso")
     void realizarCadastroDeUsuarioComSucesso() {
         CreateUserDto createUserDto = new CreateUserDto(
                 "João da Silva",
@@ -28,6 +37,13 @@ class UserServiceTest {
                 "81999999999",
                 "12345678"
         );
+
+
+        User createdUser = new User(createUserDto);
+        createdUser.setId(1L);
+
+        ArgumentCaptor<User> userCaptor = ArgumentCaptor.forClass(User.class);
+        when(userRepository.save(userCaptor.capture())).thenReturn(createdUser);
 
         User user = userService.registerUser(createUserDto);
 
@@ -40,6 +56,7 @@ class UserServiceTest {
     }
 
     @Test
+    @DisplayName("FIL-TC002 - Realizar cadastro de usuário com email já cadastrado")
     void realizarCadastroDeUsuarioComEmailJaCadastrado() {
         String email = "teste@gmail.com";
 
@@ -51,7 +68,7 @@ class UserServiceTest {
                 "81999999999",
                 "12345678"
         );
-        userService.registerUser(createUserDto);
+        when(userRepository.findByEmail(email)).thenReturn(new User(createUserDto));
 
         assertThrows(ValidationException.class, () -> {
             userService.registerUser(createUserDto);
@@ -59,6 +76,7 @@ class UserServiceTest {
     }
 
     @Test
+    @DisplayName("FIL-TC003 - Realizar cadastro de usuário com email inválido")
     void realizarCadastroDeUsuarioComEmailInvalido() {
         String email = "teste";
 
@@ -77,6 +95,7 @@ class UserServiceTest {
     }
 
     @Test
+    @DisplayName("FIL-TC004 - Realizar cadastro de usuário com telefone inválido")
     void realizarCadastroDeUsuarioComTelefoneInvalido() {
         String telefone = "8199999999";
 
@@ -96,6 +115,7 @@ class UserServiceTest {
     }
 
     @Test
+    @DisplayName("FIL-TC005 - Realizar cadastro de usuário sem campo nome completo")
     void realizarCadastroDeUsuarioSemCampoNomeCompleto() {
         String nomeCompleto = "";
 
@@ -114,6 +134,7 @@ class UserServiceTest {
     }
 
     @Test
+    @DisplayName("FIL-TC006 - Realizar cadastro de usuário com senha menor que 8 digitos")
     void realizarCadastroDeUsuarioComSenhaMenorQue8Digitos() {
         String senha = "1234567";
 
@@ -132,6 +153,7 @@ class UserServiceTest {
     }
 
     @Test
+    @DisplayName("FIL-TC007 - Realizar cadastro de usuário com CPF inválido")
     void realizarCadastroDeUsuarioComCpfInvalido() {
         String cpf = "123456789";
 
@@ -150,6 +172,7 @@ class UserServiceTest {
     }
 
     @Test
+    @DisplayName("FIL-TC008 - Realizar cadastro de usuário com data de nascimento inválida")
     void realizarCadastroDeUsuarioComDataDeNascimentoInvalida() {
         String dataNascimento = "1999-01-01";
 
@@ -165,5 +188,35 @@ class UserServiceTest {
         assertThrows(ValidationException.class, () -> {
             userService.registerUser(createUserDto);
         }, "Erro. Data de nascimento inválida. Use o formato DD/MM/YYYY");
+    }
+
+    @Test
+    @DisplayName("FIL-TC009 - Realizar cadastro de usuário com data de nascimento inválida")
+    void edicaoDoNomeDoUsuarioEfectuadaComSucesso() {
+        User user = new User();
+        user.setId(1L);
+        user.setNomeCompleto("João da Silva");
+        user.setEmail("teste@gmail.com");
+        user.setCpf("12345678910");
+        user.setDataNascimento("1999-01-01");
+        user.setNumeroTelefone("81999999999");
+
+
+        UpdateUserDto updateUserDto = new UpdateUserDto(
+                1L,
+                "Novo nome",
+                "12345678910",
+                "teste@gmail.com",
+                "1999-01-01",
+                "81999999999",
+                "12345678"
+        );
+
+        when(userRepository.findById(1L)).thenReturn(user);
+        when(userRepository.save(user)).thenReturn(user);
+
+        userService.updateUser(updateUserDto);
+
+        assertEquals("Novo nome", user.getNomeCompleto());
     }
 }
