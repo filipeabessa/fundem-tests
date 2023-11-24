@@ -2,11 +2,14 @@ package ifpe.edu.user;
 
 import ifpe.edu.common.exceptions.ValidationException;
 import ifpe.edu.common.validators.EmailValidator;
+import ifpe.edu.common.validators.PhoneNumberValidator;
 import ifpe.edu.user.dtos.CreateUserDto;
 import ifpe.edu.user.dtos.UpdateUserDto;
 
 public class UserService {
     EmailValidator emailValidator = new EmailValidator();
+
+    PhoneNumberValidator phoneNumberValidator = new PhoneNumberValidator();
 
     UserRepository userRepository;
 
@@ -16,6 +19,11 @@ public class UserService {
 
     public User registerUser(CreateUserDto createUserDto) {
         boolean isValidEmail = emailValidator.validate(createUserDto.email());
+        boolean isPhoneNumberValid = phoneNumberValidator.validate(createUserDto.numeroTelefone());
+
+        if (!isPhoneNumberValid) {
+            throw new ValidationException("Erro. Número de telefone inválido!");
+        }
 
         if (!isValidEmail) {
             throw new ValidationException("Erro. Email inválido!");
