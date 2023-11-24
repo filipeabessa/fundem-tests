@@ -2,15 +2,18 @@ package ifpe.edu.user;
 
 import ifpe.edu.common.exceptions.ValidationException;
 import ifpe.edu.common.validators.BirthDateValidator;
+import ifpe.edu.common.validators.CpfValidator;
 import ifpe.edu.common.validators.EmailValidator;
 import ifpe.edu.common.validators.PhoneNumberValidator;
 import ifpe.edu.user.dtos.CreateUserDto;
 import ifpe.edu.user.dtos.UpdateUserDto;
 
 public class UserService {
-    EmailValidator emailValidator = new EmailValidator();
-    PhoneNumberValidator phoneNumberValidator = new PhoneNumberValidator();
-    BirthDateValidator birthDateValidator = new BirthDateValidator();
+    private final EmailValidator emailValidator = new EmailValidator();
+    private final PhoneNumberValidator phoneNumberValidator = new PhoneNumberValidator();
+    private final BirthDateValidator birthDateValidator = new BirthDateValidator();
+    private final CpfValidator cpfValidator = new CpfValidator();
+
 
     UserRepository userRepository;
 
@@ -22,6 +25,11 @@ public class UserService {
         boolean isValidEmail = emailValidator.validate(createUserDto.email());
         boolean isPhoneNumberValid = phoneNumberValidator.validate(createUserDto.numeroTelefone());
         boolean isBirthDateValid = birthDateValidator.validate(createUserDto.dataNascimento());
+        boolean isCpfValid = cpfValidator.validate(createUserDto.cpf());
+
+        if (!isCpfValid) {
+            throw new ValidationException("Erro. CPF inválido.");
+        }
 
         if (!isBirthDateValid) {
             throw new ValidationException("Erro. Data de nascimento inválida. Use o formato DD/MM/YYYY");

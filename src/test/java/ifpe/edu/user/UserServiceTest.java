@@ -23,7 +23,7 @@ class UserServiceTest {
     String NOME_COMPLETO = "Filipe Bessa";
     String TELEFONE_VALIDO = "+55 (81) 9999-9999";
     String EMAIL_VALIDO = "teste@gmail.com";
-    String CPF_VALIDO = "12345678910";
+    String CPF_VALIDO = "365.420.560-76";
     String DATA_NASCIMENTO_VALIDA = "01/01/1999";
     String SENHA_VALIDA = "12345678";
     @Mock
@@ -79,9 +79,7 @@ class UserServiceTest {
 
         lenient().when(userRepository.findByEmail(email)).thenReturn(user);
 
-        assertThrows(ValidationException.class, () -> {
-            userService.registerUser(createUserDto);
-        }, "Erro. Uma conta já foi criada com esse email!");
+        assertThrows(ValidationException.class, () -> userService.registerUser(createUserDto), "Erro. Uma conta já foi criada com esse email!");
     }
 
     @Test
@@ -98,9 +96,7 @@ class UserServiceTest {
                 SENHA_VALIDA
         );
 
-        assertThrows(ValidationException.class, () -> {
-            userService.registerUser(createUserDto);
-        }, "Erro. Email inválido!");
+        assertThrows(ValidationException.class, () -> userService.registerUser(createUserDto), "Erro. Email inválido!");
     }
 
     @Test
@@ -137,9 +133,7 @@ class UserServiceTest {
                 SENHA_VALIDA
         );
 
-        assertThrows(ValidationException.class, () -> {
-            userService.registerUser(createUserDto);
-        }, "Erro. Campo 'Nome completo' não foi inserido!");
+        assertThrows(ValidationException.class, () -> userService.registerUser(createUserDto), "Erro. Campo 'Nome completo' não foi inserido!");
     }
 
     @Test
@@ -175,9 +169,7 @@ class UserServiceTest {
                 SENHA_VALIDA
         );
 
-        assertThrows(ValidationException.class, () -> {
-            userService.registerUser(createUserDto);
-        }, "Erro. CPF inválido!");
+        assertThrows(ValidationException.class, () -> userService.registerUser(createUserDto), "Erro. CPF inválido!");
     }
 
     @Test
@@ -200,7 +192,7 @@ class UserServiceTest {
     }
 
     @Test
-    @DisplayName("FIL-TC010 - Edição do nome do usuário efectuada com sucesso")
+    @DisplayName("FIL-TC009 - Edição do nome do usuário efectuada com sucesso")
     void edicaoDoNomeDoUsuarioEfectuadaComSucesso() {
         User user = new User();
         user.setNomeCompleto("João da Silva");
