@@ -131,5 +131,39 @@ class UserServiceTest {
         }, "Erro. A senha deve ter pelo menos 8 digitos.");
     }
 
+    @Test
+    void realizarCadastroDeUsuarioComCpfInvalido() {
+        String cpf = "123456789";
 
+        CreateUserDto createUserDto = new CreateUserDto(
+                "Filipe",
+                cpf,
+                "teste@gmail.com",
+                "1999-01-01",
+                "81999999999",
+                "12345678"
+        );
+
+        assertThrows(ValidationException.class, () -> {
+            userService.registerUser(createUserDto);
+        }, "Erro. CPF inválido!");
+    }
+
+    @Test
+    void realizarCadastroDeUsuarioComDataDeNascimentoInvalida() {
+        String dataNascimento = "1999-01-01";
+
+        CreateUserDto createUserDto = new CreateUserDto(
+                "Filipe",
+                "12345678910",
+                "teste@gmail.com",
+                dataNascimento,
+                "81999999999",
+                "12345678"
+        );
+
+        assertThrows(ValidationException.class, () -> {
+            userService.registerUser(createUserDto);
+        }, "Erro. Data de nascimento inválida. Use o formato DD/MM/YYYY");
+    }
 }
