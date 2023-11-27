@@ -1,5 +1,6 @@
 package ifpe.edu.user;
 
+import ifpe.edu.authentication.ReturnedSocialMediaInfos;
 import ifpe.edu.user.dtos.CreateUserDto;
 import ifpe.edu.user.dtos.UpdateUserDto;
 
@@ -33,6 +34,13 @@ public class User {
 
     public User() {
 
+    }
+
+    public User(ReturnedSocialMediaInfos socialMediaInfos) {
+        this.nomeCompleto = socialMediaInfos.nomeCompleto();
+        this.email = socialMediaInfos.email();
+        this.dataNascimento = socialMediaInfos.dataNascimento();
+        this.numeroTelefone = socialMediaInfos.numeroTelefone();
     }
 
 

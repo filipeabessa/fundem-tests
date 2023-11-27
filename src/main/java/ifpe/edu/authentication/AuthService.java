@@ -1,6 +1,7 @@
 package ifpe.edu.authentication;
 
 import ifpe.edu.common.exceptions.ValidationException;
+import ifpe.edu.user.User;
 import ifpe.edu.user.UserRepository;
 
 public class AuthService {
@@ -39,7 +40,28 @@ public class AuthService {
         return "Usuário foi desloggado com sucesso";
     }
 
+    public ReturnedSocialMediaInfos getInfosFromSocialMedia() {
+        return new ReturnedSocialMediaInfos(
+                "Nome",
+                "filipegbessa@gmail.com",
+                "21/07/1997",
+                "+55 81 99997-3333",
+                "S13bvcbcvsadsa");
+    }
+
     public String socialMediaLogin() {
-        return "Login com rede social";
+        var socialMediaInfos = getInfosFromSocialMedia();
+        var user = userRepository.findByEmail(socialMediaInfos.email());
+
+        if (user == null) {
+            user = new User(socialMediaInfos);
+            userRepository.save(user);
+            authRepository.setLoggedUser(user);
+
+            return "Usuário criado e logado com sucesso";
+        }
+        authRepository.setLoggedUser(user);
+
+        return "Login efetuado";
     }
 }

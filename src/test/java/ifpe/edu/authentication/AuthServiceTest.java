@@ -8,6 +8,7 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
+import org.mockito.Spy;
 import org.mockito.junit.jupiter.MockitoExtension;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -18,7 +19,7 @@ class AuthServiceTest {
     @Mock
     UserRepository userRepository;
 
-    @Mock
+    @Spy
     AuthRepository authRepository;
 
     @InjectMocks
@@ -36,13 +37,24 @@ class AuthServiceTest {
     @Test
     @DisplayName("FIL-TC011 - Realizar login com rede social pela primeira vez")
     void realizarLoginComRedeSocialPelaPrimeiraVez() {
+
+        when(userRepository.findByEmail("filipegbessa@gmail.com")).thenReturn(null);
         authService.socialMediaLogin();
+
+        assertEquals("Usuário criado e logado com sucesso", authService.socialMediaLogin());
     }
 
     @Test
     @DisplayName("FIL-TC012 -  Realizar Login com rede social já cadastrada")
     void realizarLoginComRedeSocialJaCadastrada() {
-        authService.socialMediaLogin();
+
+        User user = new User();
+        user.setEmail("filipegbessa@gmail.com");
+
+        when(userRepository.findByEmail("filipegbessa@gmail.com")).thenReturn(user);
+        assertEquals("Login efetuado", authService.socialMediaLogin());
+        User loggedUser = authRepository.getLoggedUser();
+        assertEquals(user, loggedUser);
     }
 
     @Test
