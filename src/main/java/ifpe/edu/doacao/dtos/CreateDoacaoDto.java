@@ -1,5 +1,7 @@
 package ifpe.edu.doacao.dtos;
 
+import ifpe.edu.user.User;
+
 import java.time.LocalDateTime;
 import java.time.LocalTime;
 
@@ -10,6 +12,8 @@ public record CreateDoacaoDto(
 
         LocalDateTime validade,
 
-        String quantidade
+        String quantidade,
+
+        User user
 ) {
 }

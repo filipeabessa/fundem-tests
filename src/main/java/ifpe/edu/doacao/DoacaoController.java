@@ -3,6 +3,9 @@ package ifpe.edu.doacao;
 import ifpe.edu.common.exceptions.ValidationException;
 import ifpe.edu.doacao.dtos.CreateDoacaoDto;
 import ifpe.edu.doacao.dtos.UpdateDoacaoDto;
+import ifpe.edu.user.User;
+
+import java.util.List;
 
 public class DoacaoController {
 
@@ -35,6 +38,10 @@ public class DoacaoController {
 
     public Doacao findById(Long id) {
         return doacaoService.findById(id);
+    }
+
+    public List<Doacao> findDoacoesByUser(User user) {
+        return doacaoService.findDoacoesByUser(user);
     }
 
     public void deleteById(Long id) {

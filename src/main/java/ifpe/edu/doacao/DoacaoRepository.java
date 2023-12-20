@@ -1,7 +1,10 @@
 package ifpe.edu.doacao;
 
+import ifpe.edu.user.User;
+
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 public final class DoacaoRepository {
 
@@ -34,6 +37,12 @@ public final class DoacaoRepository {
                 .findFirst()
                 .orElse(null);
     }
+    public List<Doacao> findDoacoesByUser(User user) {
+        return doacoes.stream()
+                .filter(doacao -> doacao.equals(user))
+                .collect(Collectors.toList());
+    }
+
 
     public void deleteById(Long id) {
         doacoes.removeIf(doacao -> doacao.getId().equals(id));

@@ -2,6 +2,7 @@ package ifpe.edu.doacao;
 
 import ifpe.edu.doacao.dtos.CreateDoacaoDto;
 import ifpe.edu.doacao.dtos.UpdateDoacaoDto;
+import ifpe.edu.user.User;
 
 import java.time.LocalDateTime;
 import java.time.LocalTime;
@@ -18,11 +19,14 @@ public class Doacao {
 
     String quantidade;
 
+    User user;
+
     public Doacao(CreateDoacaoDto createDoacaoDto) {
         this.tipoObjeto = createDoacaoDto.tipoObjeto();
         this.descricaoObjeto = createDoacaoDto.descricaoObjeto();
         this.validade = createDoacaoDto.validade();
         this.quantidade = createDoacaoDto.quantidade();
+        this.user = createDoacaoDto.user();
     }
 
     public Doacao(UpdateDoacaoDto updateDoacaoDto) {
@@ -31,6 +35,7 @@ public class Doacao {
         this.descricaoObjeto = updateDoacaoDto.descricaoObjeto();
         this.validade = updateDoacaoDto.validade();
         this.quantidade = updateDoacaoDto.quantidade();
+        this.user = updateDoacaoDto.user();
     }
 
     public Doacao() {
@@ -75,6 +80,14 @@ public class Doacao {
 
     public void setQuantidade(String quantidade) {
         this.quantidade = quantidade;
+    }
+
+    public User getUser() {
+        return user;
+    }
+
+    public void setUser(User user) {
+        this.user = user;
     }
 }
 

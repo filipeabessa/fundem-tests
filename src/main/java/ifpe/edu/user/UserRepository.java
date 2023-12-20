@@ -1,5 +1,9 @@
 package ifpe.edu.user;
 
+import ifpe.edu.doacao.Doacao;
+import ifpe.edu.doacao.DoacaoController;
+import ifpe.edu.doacao.DoacaoRepository;
+
 import java.util.ArrayList;
 import java.util.List;
 

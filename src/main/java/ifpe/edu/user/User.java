@@ -1,8 +1,11 @@
 package ifpe.edu.user;
 
 import ifpe.edu.authentication.ReturnedSocialMediaInfos;
+import ifpe.edu.doacao.Doacao;
 import ifpe.edu.user.dtos.CreateUserDto;
 import ifpe.edu.user.dtos.UpdateUserDto;
+
+import java.util.List;
 
 public class User {
     Long id;
@@ -12,6 +15,8 @@ public class User {
     String dataNascimento;
     String numeroTelefone;
     String senha;
+
+    List<Doacao> doacoes;
 
     public User(CreateUserDto createUserDto) {
         this.nomeCompleto = createUserDto.nomeCompleto();
@@ -34,6 +39,15 @@ public class User {
 
     public User() {
 
+    }
+
+    public User(Long id, String nomeCompleto, String cpf, String email, String dataNascimento, String senha) {
+        this.id = id;
+        this.nomeCompleto = nomeCompleto;
+        this.cpf = cpf;
+        this.email = email;
+        this.dataNascimento = dataNascimento;
+        this.senha = senha;
     }
 
     public User(ReturnedSocialMediaInfos socialMediaInfos) {
@@ -98,5 +112,13 @@ public class User {
 
     public void setSenha(String senha) {
         this.senha = senha;
+    }
+
+    public List<Doacao> getDoacoes() {
+        return doacoes;
+    }
+
+    public void setDoacoes(List<Doacao> doacoes) {
+        this.doacoes = doacoes;
     }
 }
