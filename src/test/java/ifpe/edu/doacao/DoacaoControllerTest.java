@@ -19,10 +19,10 @@ class DoacaoControllerTest {
     DoacaoService doacaoService;
     DoacaoController doacaoController = new DoacaoController(doacaoService);
 
-    private static final String TIPO_OBJETO_VALIDO = "Clothing";
-    private static final String DESCRICAO_OBJETO_VALIDA = "Used clothes";
+    private static final String TIPO_OBJETO_VALIDO = "Roupas";
+    private static final String DESCRICAO_OBJETO_VALIDA = "Roupas usadas";
     private static final LocalDateTime VALIDADE_VALIDA = LocalDateTime.of(2024, Month.APRIL, 21, 12, 0);
-    private static final String QUANTIDADE_VALIDA = "10 bags";
+    private static final String QUANTIDADE_VALIDA = "20";
 
     @Test
     @DisplayName("Criar doacao com validade incorreta")
@@ -41,8 +41,7 @@ class DoacaoControllerTest {
 
     @Test
     @DisplayName("Criar doacao com tipo de objeto vazio")
-    void createDoacaoWithInvalidData() {
-        LocalDateTime VALIDADE_INVALIDA = LocalDateTime.of(2021, Month.JANUARY, 27, 12, 0);
+    void createDoacaoWithInvalidTipoObjeto() {
 
         CreateDoacaoDto createDoacaoDto = new CreateDoacaoDto(
                 null,
@@ -53,5 +52,35 @@ class DoacaoControllerTest {
 
         assertThrows(ValidationException.class, () -> doacaoController.registerDoacao(createDoacaoDto));
     }
+
+    @Test
+    @DisplayName("Criar doacao com quantidade vazia")
+    void createDoacaoWithInvalidQuatidade() {
+
+        CreateDoacaoDto createDoacaoDto = new CreateDoacaoDto(
+                TIPO_OBJETO_VALIDO,
+                DESCRICAO_OBJETO_VALIDA,
+                VALIDADE_VALIDA,
+                ""
+        );
+
+        assertThrows(ValidationException.class, () -> doacaoController.registerDoacao(createDoacaoDto));
+    }
+
+    @Test
+    @DisplayName("Criar doacao com descricao vazia")
+    void createDoacaoWithInvalidDescricao() {
+
+        CreateDoacaoDto createDoacaoDto = new CreateDoacaoDto(
+                TIPO_OBJETO_VALIDO,
+                "",
+                VALIDADE_VALIDA,
+                QUANTIDADE_VALIDA
+        );
+
+        assertThrows(ValidationException.class, () -> doacaoController.registerDoacao(createDoacaoDto));
+    }
+
+
 
 }

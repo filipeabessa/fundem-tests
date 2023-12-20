@@ -18,10 +18,10 @@ import static org.mockito.Mockito.when;
 @ExtendWith(MockitoExtension.class)
 public class DoacaoServiceTest {
 
-    private static final String TIPO_OBJETO_VALIDO = "Clothing";
-    private static final String DESCRICAO_OBJETO_VALIDA = "Used clothes";
+    private static final String TIPO_OBJETO_VALIDO = "Roupas";
+    private static final String DESCRICAO_OBJETO_VALIDA = "Roupas usadas";
     private static final LocalDateTime VALIDADE_VALIDA = LocalDateTime.of(2024, Month.APRIL, 21, 12, 0);
-    private static final String QUANTIDADE_VALIDA = "10 bags";
+    private static final String QUANTIDADE_VALIDA = "20";
 
     @Mock
     DoacaoRepository doacaoRepository;
