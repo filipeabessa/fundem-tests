@@ -15,7 +15,6 @@ public class User {
     String dataNascimento;
     String numeroTelefone;
     String senha;
-
     List<Doacao> doacoes;
 
     public User(CreateUserDto createUserDto) {
