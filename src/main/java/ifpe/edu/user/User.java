@@ -2,6 +2,7 @@ package ifpe.edu.user;
 
 import ifpe.edu.authentication.ReturnedSocialMediaInfos;
 import ifpe.edu.doacao.Doacao;
+import ifpe.edu.evento.Evento;
 import ifpe.edu.user.dtos.CreateUserDto;
 import ifpe.edu.user.dtos.UpdateUserDto;
 
@@ -16,6 +17,8 @@ public class User {
     String numeroTelefone;
     String senha;
     List<Doacao> doacoes;
+
+    List<Evento> eventos;
 
     public User(CreateUserDto createUserDto) {
         this.nomeCompleto = createUserDto.nomeCompleto();
@@ -119,5 +122,13 @@ public class User {
 
     public void setDoacoes(List<Doacao> doacoes) {
         this.doacoes = doacoes;
+    }
+
+    public List<Evento> getEventos() {
+        return eventos;
+    }
+
+    public void setEventos(List<Evento> eventos) {
+        this.eventos = eventos;
     }
 }

@@ -3,6 +3,7 @@ package ifpe.edu.doacao;
 import ifpe.edu.common.exceptions.ValidationException;
 import ifpe.edu.doacao.dtos.CreateDoacaoDto;
 import ifpe.edu.doacao.dtos.UpdateDoacaoDto;
+import ifpe.edu.evento.Evento;
 import ifpe.edu.user.User;
 
 import java.util.List;
