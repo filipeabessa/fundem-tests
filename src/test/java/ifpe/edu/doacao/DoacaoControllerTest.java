@@ -24,22 +24,6 @@ import static org.mockito.Mockito.when;
 
 class DoacaoControllerTest {
 
-    @Mock
-    DoacaoRepository doacaoRepository;
-
-    @Mock
-    DoacaoService doacaoService;
-
-    DoacaoController doacaoController;
-    @BeforeEach
-    void setUp() {
-        MockitoAnnotations.openMocks(this);
-
-        doacaoService = new DoacaoService(doacaoRepository);
-        doacaoController = new DoacaoController(doacaoService);
-    }
-
-
     private static final String TIPO_OBJETO_VALIDO = "Roupas";
     private static final String DESCRICAO_OBJETO_VALIDA = "Roupas usadas";
     private static final LocalDateTime VALIDADE_VALIDA = LocalDateTime.of(2024, Month.APRIL, 21, 12, 0);
@@ -57,6 +41,21 @@ class DoacaoControllerTest {
             EMAIL_VALIDO,
             DATA_NASCIMENTO_VALIDA,
             SENHA_VALIDA);
+
+    @Mock
+    DoacaoRepository doacaoRepository;
+
+    @Mock
+    DoacaoService doacaoService;
+
+    DoacaoController doacaoController;
+    @BeforeEach
+    void setUp() {
+        MockitoAnnotations.openMocks(this);
+
+        doacaoService = new DoacaoService(doacaoRepository);
+        doacaoController = new DoacaoController(doacaoService);
+    }
 
     @Test
     @DisplayName("Criar doacao com validade incorreta")
@@ -134,9 +133,9 @@ class DoacaoControllerTest {
         doacaoCriada.setId(1L);
 
         ArgumentCaptor<Doacao> doacaoCaptor = ArgumentCaptor.forClass(Doacao.class);
-        when(doacaoService.doacaoRepository.save(doacaoCaptor.capture())).thenReturn(doacaoCriada);
+        when(doacaoController.doacaoService.doacaoRepository.save(doacaoCaptor.capture())).thenReturn(doacaoCriada);
 
-        Doacao doacao = doacaoService.registrarDoacao(createDoacaoDto);
+        Doacao doacao = doacaoController.registerDoacao(createDoacaoDto);
 
         assertEquals(TIPO_OBJETO_VALIDO, doacao.getTipoObjeto());
         assertEquals(DESCRICAO_OBJETO_VALIDA, doacao.getDescricaoObjeto());
@@ -162,6 +161,8 @@ class DoacaoControllerTest {
         when(doacaoRepository.save(doacaoCaptor.capture())).thenReturn(doacaoCriada);
 
         Doacao doacao = doacaoService.registrarDoacao(createDoacaoDto);
+
+        System.out.println(doacao.getId());
 
         when(doacaoService.findDoacoesByUser(USUARIO_VALIDO)).thenReturn(Collections.singletonList(doacao));
 

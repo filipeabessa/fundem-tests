@@ -4,16 +4,21 @@ import ifpe.edu.common.exceptions.ValidationException;
 import ifpe.edu.evento.dtos.CreateEventoDto;
 import ifpe.edu.evento.dtos.UpdateEventoDto;
 import ifpe.edu.user.User;
-import jdk.jfr.Event;
+import ifpe.edu.user.UserRepository;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class EventoService {
 
     EventoRepository eventoRepository;
 
-    public EventoService(EventoRepository eventoRepository) {
+    UserRepository userRepository;
+
+    public EventoService(EventoRepository eventoRepository,
+                         UserRepository userRepository) {
         this.eventoRepository = eventoRepository;
+        this.userRepository = userRepository;
     }
 
     public Evento registrarEvento(CreateEventoDto createEventoDto) {
@@ -31,8 +36,21 @@ public class EventoService {
         return evento.participantes;
     }
 
+    public User adicionarParticipante(Evento evento, User user) {
+        List<Evento> eventos = new ArrayList<>();
+        eventos.add(evento);
+        user.setEventos(eventos);
+
+        return userRepository.save(user);
+
+    }
+
     public void deleteById(Long id) {
         eventoRepository.deleteById(id);
+    }
+
+    public List<Evento> findEventosByUser(User user) {
+        return eventoRepository.findEventosByUser(user);
     }
 
     public Evento updateEvento(UpdateEventoDto updateEventoDto) {

@@ -22,6 +22,14 @@ public class Evento {
 
     List<User> participantes;
 
+    public Evento(Long id, String nomeEvento, String descricao, List<String> localizacao, double metaEvento) {
+        this.id = id;
+        this.nomeEvento = nomeEvento;
+        this.descricao = descricao;
+        this.localizacao = localizacao;
+        this.metaEvento = metaEvento;
+    }
+
     public Evento(CreateEventoDto createEventoDto) {
         this.descricao = createEventoDto.descricao();
         this.nomeEvento = createEventoDto.nomeEvento();

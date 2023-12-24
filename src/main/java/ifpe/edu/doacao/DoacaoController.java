@@ -3,6 +3,7 @@ package ifpe.edu.doacao;
 import ifpe.edu.common.exceptions.ValidationException;
 import ifpe.edu.doacao.dtos.CreateDoacaoDto;
 import ifpe.edu.doacao.dtos.UpdateDoacaoDto;
+import ifpe.edu.evento.Evento;
 import ifpe.edu.user.User;
 
 import java.util.List;
@@ -17,7 +18,7 @@ public class DoacaoController {
         this.doacaoService = doacaoService;
     }
 
-    public void registerDoacao(CreateDoacaoDto createDoacaoDto) {
+    public Doacao registerDoacao(CreateDoacaoDto createDoacaoDto) {
 
         doacaoFieldsValidator.validateFields(createDoacaoDto.validade());
 
@@ -33,7 +34,7 @@ public class DoacaoController {
             throw new ValidationException("Erro. Campo 'Quantidade' não foi inserido!");
         }
 
-        doacaoService.registrarDoacao(createDoacaoDto);
+        return doacaoService.registrarDoacao(createDoacaoDto);
     }
 
     public Doacao findById(Long id) {

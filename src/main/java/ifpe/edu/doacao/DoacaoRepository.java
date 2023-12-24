@@ -1,5 +1,6 @@
 package ifpe.edu.doacao;
 
+import ifpe.edu.evento.Evento;
 import ifpe.edu.user.User;
 
 import java.util.ArrayList;
