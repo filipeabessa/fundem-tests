@@ -97,6 +97,7 @@ import static org.mockito.Mockito.when;
              assertEquals(NOME_EVENTO_VALIDO, result.get(0).getNomeEvento());
              assertEquals(META_VALIDA, result.get(0).getMetaEvento());
              assertEquals(DESCRICAO_VALIDA, result.get(0).getDescricao());
+             assertEquals(LOCALIZACAO_VALIDA, result.get(0).getLocalizacao());
          });
      }
  }

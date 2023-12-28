@@ -164,10 +164,10 @@ class DoacaoControllerTest {
 
         System.out.println(doacao.getId());
 
-        when(doacaoService.findDoacoesByUser(USUARIO_VALIDO)).thenReturn(Collections.singletonList(doacao));
+        when(doacaoController.findDoacoesByUser(USUARIO_VALIDO)).thenReturn(Collections.singletonList(doacao));
 
         assertDoesNotThrow(() -> {
-            List<Doacao> result = doacaoService.findDoacoesByUser(USUARIO_VALIDO);
+            List<Doacao> result = doacaoController.findDoacoesByUser(USUARIO_VALIDO);
 
             assertEquals(TIPO_OBJETO_VALIDO, result.get(0).getTipoObjeto());
             assertEquals(DESCRICAO_OBJETO_VALIDA, result.get(0).getDescricaoObjeto());
