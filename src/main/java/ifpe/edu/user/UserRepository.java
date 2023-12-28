@@ -3,9 +3,11 @@ package ifpe.edu.user;
 import ifpe.edu.doacao.Doacao;
 import ifpe.edu.doacao.DoacaoController;
 import ifpe.edu.doacao.DoacaoRepository;
+import ifpe.edu.evento.Evento;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 public final class UserRepository {
     private static UserRepository instance;
@@ -44,8 +46,16 @@ public final class UserRepository {
                 .orElse(null);
     }
 
+    public List<User> findUsersByEvento(Evento evento) {
+        return users.stream()
+                .filter(user -> user.getEventos().contains(evento))
+                .collect(Collectors.toList());
+
+    }
+
     public void deleteById(Long id) {
         users.removeIf(user -> user.getId().equals(id));
     }
+
 
 }

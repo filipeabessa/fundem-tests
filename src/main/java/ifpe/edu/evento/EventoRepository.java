@@ -39,7 +39,7 @@ public class EventoRepository {
 
     public List<Evento> findEventosByUser(User user) {
         return eventos.stream()
-                .filter(evento -> evento.equals(user))
+                .filter(evento -> user.getEventos().contains(evento))
                 .collect(Collectors.toList());
     }
 

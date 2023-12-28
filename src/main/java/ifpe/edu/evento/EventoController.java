@@ -1,5 +1,6 @@
 package ifpe.edu.evento;
 
+import ifpe.edu.common.dtos.UserEventDto;
 import ifpe.edu.evento.dtos.CreateEventoDto;
 import ifpe.edu.evento.dtos.UpdateEventoDto;
 import ifpe.edu.user.User;
@@ -29,7 +30,7 @@ public class EventoController {
        return eventoService.updateEvento(updateEventoDto);
    }
 
-   public User participarEvento(Evento evento, User user) {
+   public UserEventDto participarEvento(Evento evento, User user) {
        return eventoService.adicionarParticipante(evento, user);
    }
 }

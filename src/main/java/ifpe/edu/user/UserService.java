@@ -5,8 +5,11 @@ import ifpe.edu.common.validators.BirthDateValidator;
 import ifpe.edu.common.validators.CpfValidator;
 import ifpe.edu.common.validators.EmailValidator;
 import ifpe.edu.common.validators.PhoneNumberValidator;
+import ifpe.edu.evento.Evento;
 import ifpe.edu.user.dtos.CreateUserDto;
 import ifpe.edu.user.dtos.UpdateUserDto;
+
+import java.util.List;
 
 public class UserService {
     UserRepository userRepository;
@@ -48,5 +51,9 @@ public class UserService {
         user.setSenha(updateUserDto.senha());
 
         return userRepository.save(user);
+    }
+
+    public List<User> findUsersByEvento(Evento evento) {
+        return userRepository.findUsersByEvento(evento);
     }
 }

@@ -1,8 +1,11 @@
 package ifpe.edu.user;
 
 import ifpe.edu.common.exceptions.ValidationException;
+import ifpe.edu.evento.Evento;
 import ifpe.edu.user.dtos.CreateUserDto;
 import ifpe.edu.user.dtos.UpdateUserDto;
+
+import java.util.List;
 
 public class UserController {
     UserService userService;
@@ -35,4 +38,8 @@ public class UserController {
         userFieldsValidator.validateFields(updateUserDto.cpf(), updateUserDto.email(), updateUserDto.dataNascimento(), updateUserDto.numeroTelefone(), updateUserDto.senha());
         return userService.updateUser(updateUserDto);
     }
+    public List<User> findUsersByEvento(Evento evento) {
+        return userService.findUsersByEvento(evento);
+    }
+
 }

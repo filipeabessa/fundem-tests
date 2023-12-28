@@ -1,5 +1,6 @@
 package ifpe.edu.evento;
 
+import ifpe.edu.common.dtos.UserEventDto;
 import ifpe.edu.common.exceptions.ValidationException;
 import ifpe.edu.evento.dtos.CreateEventoDto;
 import ifpe.edu.evento.dtos.UpdateEventoDto;
@@ -31,26 +32,28 @@ public class EventoService {
         return eventoRepository.findById(id);
     }
 
-    public List<User> findUsersByEvento(Long id) {
-        Evento evento = findById(id);
-        return evento.participantes;
+    public List<Evento> findEventosByUser(User user) {
+
+        return eventoRepository.findEventosByUser(user);
     }
 
-    public User adicionarParticipante(Evento evento, User user) {
+    public UserEventDto adicionarParticipante(Evento evento, User user) {
         List<Evento> eventos = new ArrayList<>();
         eventos.add(evento);
         user.setEventos(eventos);
 
-        return userRepository.save(user);
+        List<User> participantes = new ArrayList<>();
+        participantes.add(user);
+        evento.setParticipantes(participantes);
 
+        Evento eventoAtualizado = eventoRepository.save(evento);
+        User userAtualizado = userRepository.save(user);
+
+        return new UserEventDto(userAtualizado, eventoAtualizado);
     }
 
     public void deleteById(Long id) {
         eventoRepository.deleteById(id);
-    }
-
-    public List<Evento> findEventosByUser(User user) {
-        return eventoRepository.findEventosByUser(user);
     }
 
     public Evento updateEvento(UpdateEventoDto updateEventoDto) {
